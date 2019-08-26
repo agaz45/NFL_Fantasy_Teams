@@ -2,6 +2,18 @@ import time
 from selenium import webdriver
 
 from Owner import Owner
+
+# Establish variables
+team1 = "team1"
+team2 = "team2"
+team3 = "team3"
+team4 = "team4"
+team5 = "team5"
+team6 = "team6"
+team7 = "team7"
+team8 = "team8"
+outputFile = "standings.txt"
+cDriverLoc = "./chromedriver"
   
 def initialSetup():
   teams = [{"Jacksonville": "Jaguars", "Los Angeles": "Chargers", "Denver": "Broncos", "Miami": "Dolphins"},
@@ -14,7 +26,7 @@ def initialSetup():
            {"Pittsburgh": "Steelers", "Houston": "Texans", "Tennessee": "Titans", "New York": "Jets"},
           ]
   #You can replace with actuals names
-  owners = ["team1", "team2", "team3", "team4", "team5", "team6", "team7", "team8"]
+  owners = [team1, team2, team3, team4, team5, team6, team7, team8]
 
   teamOwners = []
   for x in range(len(teams)):
@@ -23,7 +35,7 @@ def initialSetup():
   return teamOwners
 
 def printResults(owners):
-  output = open("standings.txt", "w")
+  output = open(outputFile, "w")
   for owner in owners:
     ownerString = owner.printAll()
     print(ownerString, file=output)
@@ -43,7 +55,7 @@ def main():
   teams = initialSetup()
 
   #Use whatever folder your chromedriver is in
-  driver = webdriver.Chrome('./chromedriver')
+  driver = webdriver.Chrome(cDriverLoc)
   driver.get("https://www.foxsports.com/nfl/standings")
   tableResults = driver.find_element_by_css_selector("table.wisbb_standardTable")
 
