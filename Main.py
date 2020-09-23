@@ -1,5 +1,4 @@
 import time
-from selenium import webdriver
 
 from Owner import Owner
 
@@ -12,18 +11,18 @@ team5 = "team5"
 team6 = "team6"
 team7 = "team7"
 team8 = "team8"
+inputFile = "week3.txt"
 outputFile = "standings.txt"
-cDriverLoc = "./chromedriver"
   
 def initialSetup():
-  teams = [{"Jacksonville": "Jaguars", "Los Angeles": "Chargers", "Denver": "Broncos", "Miami": "Dolphins"},
-           {"New Orleans": "Saints", "Atlanta": "Falcons", "Oakland": "Raiders", "Chicago": "Bears"},
-           {"New Englands": "Patriots", "Baltimore": "Ravens", "San Francisco": "49ers", "Cleveland": "Browns"},
-           {"Los Angeles": "Rams", "Kansas City": "Chiefs", "New York": "Giants", "Arizona": "Cardinals"},
-           {"Minnesota": "Vikings", "Carolina": "Panthers", "Detroit": "Lions", "Buffalo": "Bills"},
-           {"Cincinnati": "Bengals", "Green Bay": "Packers", "Indianapolis": "Colts", "Tampa Bay": "Buccaneers"},
-           {"Philadelphia": "Eagles", "Dallas": "Cowboys", "Seattle": "Seahawks", "Washington": "Redskins"},
-           {"Pittsburgh": "Steelers", "Houston": "Texans", "Tennessee": "Titans", "New York": "Jets"},
+  teams = [{"Kansas City": "Chiefs", "New York": "Giants", "Atlanta": "Falcons", "Washington": "Football Team"},
+           {"Baltimore": "Ravens", "Houston": "Texans", "New England": "Patriots", "Jacksonville": "Jaguars"},
+           {"New Orleans": "Saints", "Tennessee": "Titans", "Los Angeles": "Rams", "Carolina": "Panthers"},
+           {"San Francisco": "49ers", "Philadelphia": "Eagles", "Cleveland": "Browns", "New York": "Jets"},
+           {"Tampa Bay": "Buccaneers", "Green Bay": "Packers", "Arizona": "Cardinals", "Miami": "Dolphins"},
+           {"Buffalo": "Bills", "Minnesota": "Vikings", "Denver": "Broncos", "Chicago": "Bears"},
+           {"Indianapolis": "Colts", "Pittsburgh": "Steelers", "Los Angeles": "Chargers", "Detroit": "Lions"},
+           {"Dallas": "Cowboys", "Seattle": "Seahawks", "Las Vegas": "Raiders", "Cincinnati": "Bengals"},
           ]
   #You can replace with actuals names
   owners = [team1, team2, team3, team4, team5, team6, team7, team8]
@@ -53,20 +52,21 @@ def sortOwners(owners):
 
 def main():
   teams = initialSetup()
+  stats = []
 
-  #Use whatever folder your chromedriver is in
-  driver = webdriver.Chrome(cDriverLoc)
-  driver.get("https://www.foxsports.com/nfl/standings")
-  tableResults = driver.find_element_by_css_selector("table.wisbb_standardTable")
-
+  input = open(inputFile, "r")
+  for x in input:
+    stats.append(x)
+  input.close()
+  
   #Update Teams
   for owner in teams:
     ownerTeams = owner.getTeams()
     for teamName in ownerTeams:
-      teamStats = tableResults.find_element_by_xpath("//span[contains(text(), '%s')]" % teamName).find_elements_by_xpath('../../../td')
-      owner.setRecord(teamName, teamStats[1].text, teamStats[2].text, teamStats[3].text)
-      
-  driver.quit()
+      for teamIndex in range(0, len(stats), 2):
+        if(teamName in stats[teamIndex]):
+          teamStat = stats[teamIndex+1].split()
+          owner.setRecord(teamName, teamStat[0], teamStat[1], teamStat[2])
   
   #Update Total
   for owner in teams:
