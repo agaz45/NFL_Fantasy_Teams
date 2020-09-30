@@ -2,6 +2,9 @@ class Owner:
   def __init__(self, owner, teams):
     self.owner = owner
     self.total = 0
+    self.weekWins = 0
+    self.weekLosses = 0
+    self.weekTies = 0
     self.teams = []
     for city, name in teams.items():
       self.teams.append(Team(city, name))
@@ -26,12 +29,27 @@ class Owner:
     for team in self.teams:
       teamNames.append(team.getName())
     return teamNames
+    
+  def setWeekRecord(self, wins, losses, ties):
+    self.weekWins = wins
+    self.weekLosses = losses
+    self.weekTies =  ties
+    return
 
-  def printAll(self):
+  def printAll(self, weekRecords):
     builtStr = []
     builtStr.append(self.owner)
     builtStr.append(": ")
     builtStr.append(str(self.total))
+    if (weekRecords):
+      builtStr.append(" (")
+      builtStr.append(str(self.weekWins))
+      builtStr.append("-")
+      builtStr.append(str(self.weekLosses))
+      if (self.weekTies):
+        builtStr.append("-")
+        builtStr.append(str(self.weekTies))
+      builtStr.append(")")
     builtStr.append("\n")
     for team in self.teams:
       builtStr.append(team.getFullName())
