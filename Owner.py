@@ -6,7 +6,7 @@ class Owner:
     self.weekLosses = 0
     self.weekTies = 0
     self.teams = []
-    for city, name in teams.items():
+    for name, city in teams.items():
       self.teams.append(Team(city, name))
 
   def setTotal(self):
@@ -52,6 +52,7 @@ class Owner:
       builtStr.append(")")
     builtStr.append("\n")
     for team in self.teams:
+      builtStr.append("- ")
       builtStr.append(team.getFullName())
       builtStr.append(" (")
       builtStr.append(team.getRecord())
@@ -78,7 +79,6 @@ class Team:
     concatStr.append(" ")
     concatStr.append(self.name)
 
-    
     return ''.join(concatStr)
 
   def setRecord(self, wins, losses, ties):
