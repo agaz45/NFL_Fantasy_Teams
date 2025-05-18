@@ -1,103 +1,72 @@
 class Owner:
-  def __init__(self, owner, teams):
-    self.owner = owner
-    self.total = 0
-    self.weekWins = 0
-    self.weekLosses = 0
-    self.weekTies = 0
-    self.teams = []
-    for name, city in teams.items():
-      self.teams.append(Team(city, name))
+    def __init__(self, owner: str, teams: dict):
+        self.owner = owner
+        self.total = 0
+        self.weekWins = 0
+        self.weekLosses = 0
+        self.weekTies = 0
+        self.teams = [Team(city, name) for name, city in teams.items()]
 
-  def setTotal(self):
-    for team in self.teams:
-      self.total = self.total + team.getPoints()
-    return
+    def setTotal(self):
+        self.total = sum(team.getPoints() for team in self.teams)
 
-  def getTotal(self):
-    return self.total
+    def getTotal(self):
+        return self.total
 
-  def setRecord(self, name, wins, losses, ties):
-    for team in self.teams:
-      if team.getName() == name:
-        team.setRecord(wins, losses, ties)
-        return
-    return
+    def setRecord(self, name: str, wins: int, losses: int, ties: int):
+        for team in self.teams:
+            if team.getName() == name:
+                team.setRecord(wins, losses, ties)
+                break
 
-  def getTeams(self):
-    teamNames = []
-    for team in self.teams:
-      teamNames.append(team.getName())
-    return teamNames
-    
-  def setWeekRecord(self, wins, losses, ties):
-    self.weekWins = wins
-    self.weekLosses = losses
-    self.weekTies =  ties
-    return
+    def getTeams(self):
+        return [team.getName() for team in self.teams]
 
-  def printAll(self, weekRecords):
-    builtStr = []
-    builtStr.append(self.owner)
-    builtStr.append(": ")
-    builtStr.append(str(self.total))
-    if (weekRecords):
-      builtStr.append(" (")
-      builtStr.append(str(self.weekWins))
-      builtStr.append("-")
-      builtStr.append(str(self.weekLosses))
-      if (self.weekTies):
-        builtStr.append("-")
-        builtStr.append(str(self.weekTies))
-      builtStr.append(")")
-    builtStr.append("\n")
-    for team in self.teams:
-      builtStr.append("- ")
-      builtStr.append(team.getFullName())
-      builtStr.append(" (")
-      builtStr.append(team.getRecord())
-      builtStr.append(")\n")
+    def setWeekRecord(self, wins: int, losses: int, ties: int):
+        self.weekWins = wins
+        self.weekLosses = losses
+        self.weekTies = ties
 
-    allString = ''.join(builtStr)
-    return allString
+    def printAll(self, weekRecords: bool):
+        result = [f"{self.owner}: {self.total}"]
+        if weekRecords:
+            record = f" ({self.weekWins}-{self.weekLosses}"
+            if self.weekTies:
+                record += f"-{self.weekTies}"
+            record += ")"
+            result.append(record)
+
+        result.append("\n")
+        for team in self.teams:
+            result.append(f"- {team.getFullName()} ({team.getRecord()})\n")
+
+        return "".join(result)
 
 
 class Team:
-  def __init__(self, city, name):
-    self.city = city
-    self.name = name
-    self.wins = 0
-    self.losses = 0
-    self.ties = 0
+    def __init__(self, city: str, name: str):
+        self.city = city
+        self.name = name
+        self.wins = 0
+        self.losses = 0
+        self.ties = 0
 
-  def getName(self):
-    return self.name
+    def getName(self):
+        return self.name
 
-  def getFullName(self):
-    concatStr = []
-    concatStr.append(self.city)
-    concatStr.append(" ")
-    concatStr.append(self.name)
+    def getFullName(self):
+        return f"{self.city} {self.name}"
 
-    return ''.join(concatStr)
+    def setRecord(self, wins, losses, ties):
+        self.wins = int(wins)
+        self.losses = int(losses)
+        self.ties = int(ties)
 
-  def setRecord(self, wins, losses, ties):
-    self.wins = wins
-    self.losses = losses
-    self.ties = ties
-    return
+    def getRecord(self):
+        record = f"{self.wins}-{self.losses}"
+        if self.ties != 0:
+            record += f"-{self.ties}"
+        return record
 
-  def getRecord(self):
-    teamRecord = []
-    teamRecord.append(self.wins)
-    teamRecord.append("-")
-    teamRecord.append(self.losses)
-
-    if self.ties != '0':
-      teamRecord.append("-")
-      teamRecord.append(self.ties)
-
-    return ''.join(teamRecord)
-
-  def getPoints(self):
-    return float(self.wins) + float(self.ties) * 0.5
+    def getPoints(self):
+        return self.wins + self.ties * 0.5

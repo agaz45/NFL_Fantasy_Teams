@@ -1,124 +1,87 @@
 import sys
+import json
 from Owner import Owner
 
-week = int(sys.argv[1])
+def get_week_files(week, owners_file):
+    output_file = "standings_fam.txt" if "fam" in owners_file else "standings.txt"
+    return f"week{week - 1}.txt", f"week{week}.txt", output_file
 
-# Establish variables
-team1 = "team1"
-team2 = "team2"
-team3 = "team3"
-team4 = "team4"
-team5 = "team5"
-team6 = "team6"
-team7 = "team7"
-team8 = "team8"
-lastWeek = "week" + str(week - 1) + ".txt"
-currentWeek = "week" + str(week) + ".txt"
-outputFile = "standings.txt"
+def load_owners_and_teams(filename="owners.json"):
+    with open(filename, "r") as f:
+        data = json.load(f)
+    return data["owners"]
 
-weekRecords = True
+def initial_setup(owner_data):
+    owners = []
+    for owner_entry in owner_data:
+        name = owner_entry["name"]
+        teams = owner_entry["teams"]
+        owners.append(Owner(name, teams))
+    return owners
 
-def initialSetup():
-    teams = [{"49ers": "San Francisco", "Browns": "Cleveland",     "Colts": "Indianapolis",   "Panthers": "Carolina"},
-             {"Chiefs": "Kansas City",  "Falcons": "Atlanta",      "Steelers": "Pittsburgh",  "Broncos": "Denver"},
-             {"Lions": "Detroit",       "Buccaneers": "Tampa Bay", "Bears": "Chicago",        "Patriots": "New England"},
-             {"Ravens": "Baltimore",    "Rams": "Los Angeles",     "Jaguars": "Jacksonville", "Commanders": "Washington"},
-             {"Eagles": "Philadelphia", "Dolphins": "Miami",       "Chargers": "Los Angeles", "Titans": "Tennessee"},
-             {"Bills": "Buffalo",       "Texans": "Houston",       "Seahawks": "Seattle",     "Cardinals": "Arizona"},
-             {"Bengals": "Cincinnati",  "Jets": "New York",        "Saints": "New Orleans",   "Giants": "New York"},
-             {"Packers": "Green Bay",   "Cowboys": "Dallas",       "Vikings": "Minnesota",    "Raiders": "Las Vegas"}]
+def read_file_lines(filename):
+    with open(filename, "r") as f:
+        return f.readlines()
 
-    owners = [team1, team2, team3, team4, team5, team6, team7, team8]
-
-    teamOwners = []
-    for x in range(len(teams)):
-        teamOwners.append(Owner(owners[x], teams[x]))
-    return teamOwners
-
-def printResults(owners):
-    output = open(outputFile, "w")
+def update_owners(owners, current_stats, last_stats=None):
     for owner in owners:
-        ownerString = owner.printAll(weekRecords)
-        print(ownerString, file=output)
-    output.close()
+        week_wins = week_losses = week_ties = 0
 
-def sortOwners(owners):
-    # Can be optimized from insertion sort. But having such a small n, it is not worth the hassle
-    for i in range(len(owners)):
-        big = i
-        for j in range(i+1, len(owners)):
-            if owners[big].getTotal() < owners[j].getTotal():
-                big = j
-        owners[big], owners[i] = owners[i], owners[big]
-    return
+        for team_name in owner.getTeams():
+            current_record = next(
+                (line.split()[-3:] for line in current_stats if team_name in line),
+                None
+            )
+            if current_record:
+                wins, losses, ties = current_record
+                owner.setRecord(team_name, wins, losses, ties)
+
+            if last_stats:
+                previous_record = next(
+                    (line.split()[-3:] for line in last_stats if team_name in line),
+                    None
+                )
+                if previous_record and current_record:
+                    if previous_record[0] != current_record[0]:
+                        week_wins += 1
+                    elif previous_record[1] != current_record[1]:
+                        week_losses += 1
+                    elif previous_record[2] != current_record[2]:
+                        week_ties += 1
+
+        if last_stats:
+            owner.setWeekRecord(week_wins, week_losses, week_ties)
+
+def sort_owners(owners):
+    owners.sort(key=lambda o: o.getTotal(), reverse=True)
+
+def write_standings(owners, filename, show_week_records=True):
+    with open(filename, "w") as f:
+        for owner in owners:
+            f.write(owner.printAll(show_week_records))
 
 def main():
-    teams = initialSetup()
-    stats = []
-    lastWeekStats = []
+    if len(sys.argv) < 2:
+        print("Usage: python main.py <week_number> [owners_json_file]")
+        sys.exit(1)
 
-    input = open(currentWeek, "r")
-    for x in input:
-        stats.append(x)
-    input.close()
+    week = int(sys.argv[1])
+    owners_json = sys.argv[2] if len(sys.argv) > 2 else "owners.json"
 
-    if weekRecords:
-        input = open(lastWeek, "r")
-        for x in input:
-            lastWeekStats.append(x)
-        input.close()
+    last_week_file, current_week_file, output_file = get_week_files(week, owners_json)
 
-    # Update Teams
-    for owner in teams:
-        weekWins = 0
-        weekLosses = 0
-        weekTies = 0
+    owner_data = load_owners_and_teams(owners_json)
+    owners = initial_setup(owner_data)
+    current_stats = read_file_lines(current_week_file)
+    last_stats = read_file_lines(last_week_file) if week > 1 else None
 
-        ownerTeams = owner.getTeams()
-        for teamName in ownerTeams:        
-            teamWins = 0
-            teamLosses = 0
-            teamTies = 0
-            for teamIndex in range(0, len(stats)):
-                if(teamName in stats[teamIndex]):
-                    # Update Overall Records
-                    teamStat = stats[teamIndex].split()
-                    teamParams = len(teamStat)
-                    teamWins = teamStat[teamParams - 3]
-                    teamLosses = teamStat[teamParams - 2]
-                    teamTies = teamStat[teamParams - 1]
+    update_owners(owners, current_stats, last_stats)
 
-                    owner.setRecord(teamName, teamWins, teamLosses, teamTies)
-                    break
-
-            # Update Week Record
-            if weekRecords:
-                for teamIndex in range(0, len(lastWeekStats)):
-                    if(teamName in lastWeekStats[teamIndex]):
-                        teamStat = lastWeekStats[teamIndex].split()
-                        teamParams = len(teamStat)
-
-                        if (teamStat[teamParams - 3] != teamWins):
-                            weekWins = weekWins + 1
-                        elif (teamStat[teamParams - 2] != teamLosses):
-                            weekLosses = weekLosses + 1
-                        elif (teamStat[teamParams - 1] != teamTies):
-                            weekTies = weekTies + 1
-                        break
-
-        # Set Week Record for owner
-        if weekRecords:
-            owner.setWeekRecord(weekWins, weekLosses, weekTies)
-
-    # Update Total
-    for owner in teams:
+    for owner in owners:
         owner.setTotal()
 
-    # Sort Owners
-    sortOwners(teams)
-
-    # Print to file
-    printResults(teams)
+    sort_owners(owners)
+    write_standings(owners, output_file, show_week_records=(week > 1))
 
 if __name__ == '__main__':
     main()

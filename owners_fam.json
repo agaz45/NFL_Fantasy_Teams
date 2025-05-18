@@ -1,0 +1,57 @@
+{
+    "owners": [
+      {
+        "name": "Team1",
+        "teams": {
+          "Jets": "New York",        
+          "Browns": "Cleveland",    
+          "Texans": "Houston",       
+          "Raiders": "Las Vegas",    
+          "Eagles": "Philadelphia",   
+          "Packers": "Green Bay", 
+          "Saints": "New Orleans",   
+          "Cardinals": "Arizona"
+        }
+      },
+      {
+        "name": "Team2",
+        "teams": {
+          "Patriots": "New England", 
+          "Bengals": "Cincinnati",  
+          "Colts": "Indianapolis",   
+          "Chargers": "Los Angeles", 
+          "Cowboys": "Dallas",        
+          "Vikings": "Minnesota", 
+          "Buccaneers": "Tampa Bay", 
+          "Rams": "Los Angeles"
+        }
+      },
+      {
+        "name": "Team3",
+        "teams": {
+          "Bills": "Buffalo",        
+          "Steelers": "Pittsburgh", 
+          "Titans": "Tennessee",     
+          "Chiefs": "Kansas City",   
+          "Commanders": "Washington", 
+          "Lions": "Detroit",     
+          "Panthers": "Carolina",    
+          "Seahawks": "Seattle"
+        }
+      },
+      {
+        "name": "Team4",
+        "teams": {
+          "Dolphins": "Miami",       
+          "Ravens": "Baltimore",    
+          "Jaguars": "Jacksonville", 
+          "Broncos": "Denver",      
+          "Giants": "New York",       
+          "Bears": "Chicago",     
+          "Falcons": "Atlanta",      
+          "49ers": "San Francisco"
+        }
+      }
+    ]
+  }
+  

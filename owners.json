@@ -1,0 +1,77 @@
+{
+    "owners": [
+      {
+        "name": "Team1",
+        "teams": {
+          "49ers": "San Francisco",
+          "Browns": "Cleveland",
+          "Colts": "Indianapolis",
+          "Panthers": "Carolina"
+        }
+      },
+      {
+        "name": "Team2",
+        "teams": {
+          "Chiefs": "Kansas City",
+          "Falcons": "Atlanta",
+          "Steelers": "Pittsburgh",
+          "Broncos": "Denver"
+        }
+      },
+      {
+        "name": "Team3",
+        "teams": {
+          "Lions": "Detroit",
+          "Buccaneers": "Tampa Bay",
+          "Bears": "Chicago",
+          "Patriots": "New England"
+        }
+      },
+      {
+        "name": "Team4",
+        "teams": {
+          "Ravens": "Baltimore",
+          "Rams": "Los Angeles",
+          "Jaguars": "Jacksonville",
+          "Commanders": "Washington"
+        }
+      },
+      {
+        "name": "Team5",
+        "teams": {
+          "Eagles": "Philadelphia",
+          "Dolphins": "Miami",
+          "Chargers": "Los Angeles",
+          "Titans": "Tennessee"
+        }
+      },
+      {
+        "name": "Team6",
+        "teams": {
+          "Bills": "Buffalo",
+          "Texans": "Houston",
+          "Seahawks": "Seattle",
+          "Cardinals": "Arizona"
+        }
+      },
+      {
+        "name": "Team7",
+        "teams": {
+          "Bengals": "Cincinnati",
+          "Jets": "New York",
+          "Saints": "New Orleans",
+          "Giants": "New York"
+        }
+      },
+      {
+        "name": "Team8",
+        "teams": {
+          "Packers": "Green Bay",
+          "Cowboys": "Dallas",
+          "Vikings": "Minnesota",
+          "Raiders": "Las Vegas"
+        }
+      }
+    ]
+  }
+  
