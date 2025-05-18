@@ -7,10 +7,9 @@ e.g.:
   python Main.py $week "owners_fam.json"  - Comment this out if you are using a 8 owner pool
 
 To run, all you need to do is run ./nfl.ps1 <week>
-For example
+
+For example, to run week 8:
 
 ./nfl.ps1 8
-This will run the pool for week 8
-
 
 Note: If you want to have performance week by week, make sure the keep the week<number>.txt file for the script to parse
