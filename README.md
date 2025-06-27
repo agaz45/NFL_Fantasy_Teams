@@ -1,15 +1,41 @@
-If you are running an 8 owner pool, update the owners.json file with the appropriate teams
-If you are running a 4 owner pool, update the owners_fam.json file with the appropriate teams
+# Fantasy Football Tracker
 
-In nfl.ps1, comment out the line whichever pool you are not using
-e.g.:
-  python Main.py $week "owners.json"      - Comment this out if you are using a 4 owner pool
-  python Main.py $week "owners_fam.json"  - Comment this out if you are using a 8 owner pool
+A Python-based fantasy football application that helps users manage and track fantasy football teams with up-to-date player stats, schedules, and performance analysis.
 
-To run, all you need to do is run ./nfl.ps1 <week>
+## Features
 
-For example, to run week 8:
+- **Player Stats & Projections:** Fetch and display real-time player performance data.  
+- **Team Management:** Add, remove, and update players on your fantasy team.  
+- **Standings Tracker:** Track league standings and weekly points.  
+- **Schedule Management:** View upcoming games and player matchups.  
+- **Data Automation:** Automatically scrape and update player stats and standings using web scraping and API integration.  
 
-./nfl.ps1 8
+## Technology Stack
 
-Note: If you want to have performance week by week, make sure the keep the week<number>.txt file for the script to parse
+- Python 3.x  
+- Web scraping with BeautifulSoup and Requests  
+- Data storage using CSV and/or SQLite (as applicable)  
+- Command Line Interface (CLI) for user interaction  
+- Optional: Integration with external sports APIs  
+
+## Installation
+
+1. Clone the repo:  
+   ```powershell
+   git clone https://github.com/yourusername/fantasy-football-tracker.git
+   ```
+2. Install dependencies:
+  ```powershell
+  pip install -r requirements.txt
+  ```
+3.Run the application:
+  ```
+  python main.py
+  ```
+
+## Usage
+- Launch the app via CLI and follow prompts to manage your team and track stats.
+- Data updates automatically on startup to ensure current player information.
+
+## Contribution
+Contributions are welcome! Please open issues or submit pull requests.
