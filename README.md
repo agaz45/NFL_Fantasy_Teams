@@ -20,18 +20,18 @@ A Python-based fantasy football application that helps users manage and track fa
 
 ## Installation
 
-1. Clone the repo:  
+1. Clone the repo:
    ```powershell
    git clone https://github.com/yourusername/fantasy-football-tracker.git
    ```
-2. Install dependencies:
-  ```powershell
-  pip install -r requirements.txt
-  ```
-3.Run the application:
-  ```
-  python main.py
-  ```
+3. Install dependencies:
+   ```powershell
+   pip install -r requirements.txt
+   ```
+3. Run the application:
+   ```
+   python main.py
+   ```
 
 ## Usage
 - Launch the app via CLI and follow prompts to manage your team and track stats.
